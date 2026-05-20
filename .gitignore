@@ -1,0 +1,15 @@
+browser-heartbeat-last-report.txt
+browser-heartbeat-alert.txt
+browser-heartbeat-last-result.json
+*.log
+
+.env
+.env.*
+secrets.*
+*.key
+*.pem
+
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
