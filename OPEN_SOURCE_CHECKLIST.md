@@ -7,6 +7,7 @@ Use this before making the repository public.
 - Confirm no browser history, cookies, session data, or private tab content is committed.
 - Confirm the runbook explains that reports can contain tab titles and URLs.
 - Confirm the scanner remains read-only.
+- Run `npm test`.
 - Confirm the license is intentional. This repository currently uses MIT.
 
 Suggested GitHub settings:

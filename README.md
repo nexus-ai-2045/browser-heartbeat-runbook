@@ -26,14 +26,22 @@ The heartbeat is intentionally read-only. It scans open Browser tabs, looks for 
 Open a Codex turn where the Browser plugin and JavaScript execution tool are available, then run:
 
 ```js
-await import("file:///absolute/path/to/scripts/browser-heartbeat.repl.js");
+const heartbeat = await import("file:///absolute/path/to/scripts/browser-heartbeat.repl.js");
 ```
 
-By default, output files are written to the current JavaScript working directory. To choose an output directory:
+The import runs one heartbeat immediately. It also exports `runBrowserHeartbeat()` so you can run it again in the same JavaScript session:
 
 ```js
-globalThis.BROWSER_HEARTBEAT_OUTPUT_DIR = "C:/path/to/output";
-await import("file:///absolute/path/to/scripts/browser-heartbeat.repl.js");
+await heartbeat.runBrowserHeartbeat();
+```
+
+By default, output files are written to the current JavaScript working directory. To choose an output directory or timezone:
+
+```js
+await heartbeat.runBrowserHeartbeat({
+  outputDir: "C:/path/to/output",
+  timeZone: "Asia/Tokyo",
+});
 ```
 
 Generated files:
@@ -45,6 +53,16 @@ Generated files:
 ## Automation Prompt
 
 See [browser-heartbeat-automation.md](browser-heartbeat-automation.md) for a reusable prompt if you later wire this into a recurring Codex automation.
+
+## Verification
+
+Run the unit tests with Node 20 or newer:
+
+```sh
+npm test
+```
+
+The tests use a mocked Browser client and confirm clear, blocked, and inspection-failure outcomes.
 
 ## Privacy
 

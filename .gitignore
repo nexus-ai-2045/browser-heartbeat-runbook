@@ -2,6 +2,7 @@ browser-heartbeat-last-report.txt
 browser-heartbeat-alert.txt
 browser-heartbeat-last-result.json
 *.log
+node_modules/
 
 .env
 .env.*
