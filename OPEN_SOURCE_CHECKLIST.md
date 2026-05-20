@@ -6,6 +6,7 @@
 - ローカルの絶対パスが commit されていない。
 - ブラウザ履歴、cookie、session data、private tab content が commit されていない。
 - README に「レポートにはタブタイトルや URL が含まれうる」と明記されている。
+- README に前提条件、出力例、制限事項が明記されている。
 - scanner が読み取り専用のままになっている。
 - `npm test` が通る。
 - ライセンスが意図したものになっている。このリポジトリは MIT。
