@@ -1,41 +1,54 @@
 # Browser Heartbeat Runbook
 
-Private-first runbook and snippet for checking whether a Codex in-app Browser session needs attention.
+Codex の in-app Browser が「エラーで止まっていないか」「ログインや確認待ちになっていないか」「人間が判断すべき画面で止まっていないか」を、読み取り専用で点検するための小さなランブックとサンプル実装です。
 
-The heartbeat is intentionally read-only. It scans open Browser tabs, looks for visible attention signals, checks recent console errors when available, and writes a compact report.
+長めのブラウザ作業を Codex に任せたあと、現在のタブ状態を安全に見回り、注意が必要なものを短いレポートとして残します。
 
-## What It Flags
+## 何をするものか
 
-- Runtime errors or failed pages.
-- Sign-in, permission, or account-choice prompts.
-- Confirmations that need user review.
-- Payment, checkout, upload, or download flows.
-- Pages that cannot be inspected.
+- 開いている Browser タブのタイトルと URL を一覧化します。
+- 可能な場合、各タブの recent console errors を確認します。
+- 可能な場合、DOM snapshot から画面上の注意シグナルを探します。
+- 結果を `clear` / `attention-needed` / `blocked` の3段階で判定します。
+- レポート、アラート、JSON 結果をファイルに書き出します。
 
-## What It Must Not Do
+## 検出するもの
 
-- Submit forms.
-- Approve confirmations.
-- Transmit sensitive data.
-- Start payments.
-- Upload or download files.
-- Click destructive controls.
+- runtime error、build failed、exception などのエラー状態
+- sign in、permission、choose an account などのログイン・権限待ち
+- confirm、are you sure などの確認待ち
+- challenge、captcha、verify you are human などの本人確認
+- payment、checkout などの支払い・購入フロー
+- upload、download などのファイル転送フロー
+- delete、remove などの破壊的操作
+- タブやページ内容を検査できない状態
 
-## Manual Run
+## やらないこと
 
-Open a Codex turn where the Browser plugin and JavaScript execution tool are available, then run:
+このスクリプトは読み取り専用です。
+
+- フォームを送信しません。
+- 確認ダイアログを承認しません。
+- 機密情報を送信しません。
+- 支払いを開始しません。
+- ファイルをアップロード・ダウンロードしません。
+- 削除などの破壊的なボタンをクリックしません。
+
+## 手動実行
+
+Codex の Browser plugin と JavaScript 実行環境が使える turn で、次のように実行します。
 
 ```js
 const heartbeat = await import("file:///absolute/path/to/scripts/browser-heartbeat.repl.js");
 ```
 
-The import runs one heartbeat immediately. It also exports `runBrowserHeartbeat()` so you can run it again in the same JavaScript session:
+import すると、その場で1回 heartbeat が実行されます。さらに `runBrowserHeartbeat()` が export されるので、同じ JavaScript セッション内で再実行できます。
 
 ```js
 await heartbeat.runBrowserHeartbeat();
 ```
 
-By default, output files are written to the current JavaScript working directory. To choose an output directory or timezone:
+出力先やタイムゾーンを指定する場合:
 
 ```js
 await heartbeat.runBrowserHeartbeat({
@@ -44,29 +57,29 @@ await heartbeat.runBrowserHeartbeat({
 });
 ```
 
-Generated files:
+生成されるファイル:
 
 - `browser-heartbeat-last-report.txt`
 - `browser-heartbeat-alert.txt`
 - `browser-heartbeat-last-result.json`
 
-## Automation Prompt
+## 自動化プロンプト
 
-See [browser-heartbeat-automation.md](browser-heartbeat-automation.md) for a reusable prompt if you later wire this into a recurring Codex automation.
+Codex の定期実行や heartbeat に組み込む場合のプロンプト例は [browser-heartbeat-automation.md](browser-heartbeat-automation.md) にあります。
 
-## Verification
+## 検証
 
-Run the unit tests with Node 20 or newer:
+Node 20 以上でテストを実行します。
 
 ```sh
 npm test
 ```
 
-The tests use a mocked Browser client and confirm clear, blocked, and inspection-failure outcomes.
+テストでは mocked Browser client を使い、正常系、blocked 判定、DOM inspection 失敗、タブ取得失敗を確認しています。
 
-## Privacy
+## 公開時の注意
 
-The report can contain tab titles and URLs. Review output before sharing it.
+出力レポートにはタブタイトル、URL、画面上のテキスト由来の検出結果、console error count が含まれる場合があります。生成物を共有・コミットする前に、必ず内容を確認してください。
 
 ## License
 

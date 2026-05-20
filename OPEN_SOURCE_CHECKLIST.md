@@ -1,17 +1,17 @@
-# Open Source Checklist
+# 公開前チェックリスト
 
-Use this before making the repository public.
+このリポジトリを public にする前に確認してください。
 
-- Confirm generated heartbeat output files are not committed.
-- Confirm no local absolute paths are committed.
-- Confirm no browser history, cookies, session data, or private tab content is committed.
-- Confirm the runbook explains that reports can contain tab titles and URLs.
-- Confirm the scanner remains read-only.
-- Run `npm test`.
-- Confirm the license is intentional. This repository currently uses MIT.
+- 生成された heartbeat 出力ファイルが commit されていない。
+- ローカルの絶対パスが commit されていない。
+- ブラウザ履歴、cookie、session data、private tab content が commit されていない。
+- README に「レポートにはタブタイトルや URL が含まれうる」と明記されている。
+- scanner が読み取り専用のままになっている。
+- `npm test` が通る。
+- ライセンスが意図したものになっている。このリポジトリは MIT。
 
-Suggested GitHub settings:
+GitHub 設定案:
 
-- Visibility: private first.
-- Description: `Runbook and snippet for read-only Codex Browser heartbeat checks.`
+- Visibility: private first
+- Description: `Codex Browser の状態を読み取り専用で点検する heartbeat runbook`
 - Topics: `codex`, `browser`, `automation`, `runbook`, `monitoring`

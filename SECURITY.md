@@ -1,7 +1,7 @@
 # Security Policy
 
-The heartbeat report can contain tab titles, URLs, visible page text signals, and console error counts.
+heartbeat レポートには、タブタイトル、URL、画面上のテキスト由来の検出結果、console error count が含まれる場合があります。
 
-Do not commit or publish generated reports unless you have reviewed them.
+生成されたレポートは、内容を確認するまで commit や公開をしないでください。
 
-The scanner must stay read-only. It should not submit forms, approve confirmations, transmit sensitive data, start payments, upload files, or download files.
+scanner は読み取り専用のままにしてください。フォーム送信、確認の承認、機密情報の送信、支払い開始、ファイルのアップロード・ダウンロードを行ってはいけません。
